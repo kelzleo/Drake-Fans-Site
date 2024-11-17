@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/head.ejs') %>
+
+    <body>
+        <%- include('../partials/nav.ejs') %>
+
+        <div class="container">
+            <h1 class="mb-4">Latest News And Updates</h1>
+            <!-- Link to create a new post -->
+            <a href="/updates/new" class="btn">New News</a>
+
+            <!-- Grid container for the posts -->
+            <div class="posts-grid">
+                <!-- Loop through each post -->
+                <% posts.forEach(post => { %>
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Display the title of the post -->
+                            <h4 class="class-title"><%= post.title %></h4>
+
+                            <!-- Display the creation date of the post -->
+                            <div class="sub-title"><%= post.createdAt.toLocaleDateString() %></div>
+
+                            <!-- Display the image in the preview -->
+                            <% if (post.imagePath) { %>
+                                <img src="<%= post.imagePath %>" alt="Post Image" class="article-image">
+                            <% } %>
+                        </div>
+
+                        <!-- Display the description of the post -->
+                        <div class="class-text">
+                            <%= post.description %>
+                        </div>
+
+                        <!-- Action buttons for Read More, Edit, and Delete -->
+                        <div class="btn-flex">
+                            <!-- Link to view the full post -->
+                            <a href="/updates/<%= post.slug %>" class="read-more">Read more</a>
+
+                            <!-- Link to edit the post -->
+                            <a href="/updates/edit/<%= post.id %>" class="Edit">Edit</a>
+
+                            <!-- Form to delete the post -->
+                            <form action="/updates/<%= post.id %>?_method=DELETE" method="POST">
+                                <button type="submit" class="btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <script>
+            function toggleMobileMenu(menu) {
+              var isOpen = menu.classList.toggle('open');
+              if (!isOpen) {
+                  closeDropdowns(); // Close dropdowns when menu is closed
+              }
+          }
+          
+          // Function to toggle dropdown
+          function toggleDropdown(event) {
+              event.stopPropagation(); // Prevent propagation of the click event
+              var parentListItem = event.target.parentElement;
+              parentListItem.classList.toggle('open');
+          }
+          
+          // Function to close all dropdowns
+          function closeDropdowns() {
+              var dropdowns = document.querySelectorAll('.has-dropdown');
+              dropdowns.forEach(function(dropdown) {
+                  dropdown.classList.remove('open');
+              });
+          }
+          
+          // Close dropdowns when clicking outside of them
+          document.addEventListener('click', function(event) {
+              var dropdowns = document.querySelectorAll('.has-dropdown');
+              dropdowns.forEach(function(dropdown) {
+                  if (!dropdown.contains(event.target)) {
+                      dropdown.classList.remove('open');
+                  }
+              });
+          });
+          
+          // Close dropdowns when the window is resized (for responsiveness)
+          window.addEventListener('resize', function() {
+              closeDropdowns();
+          });
+          
+          // Close dropdowns when the mobile menu is closed
+          document.getElementById('ham-icon').addEventListener('click', function(event) {
+              if (!event.currentTarget.classList.contains('open')) {
+                  closeDropdowns();
+              }
+          });
+
+        
+
+          
+          </script>
+    </body>
+</html>
