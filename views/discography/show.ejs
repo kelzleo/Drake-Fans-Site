@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/head.ejs', { title: 'Create New Article' }) %>
+
+
+    <body>
+       <h1 class="new-head"><%= article.title %></h1>
+       <div><%= article.createdAt.toLocaleDateString() %>
+        <a href="/discography" class="all-articles">Latest Discography</a>
+        <% if (user && user.isAdmin) { %>
+          <a href="/discography/edit/<%= article.id %>" class="edit-articles"> 
+            Edit
+          </a>
+        <% } %>
+       </div>
+
+       <% if (article.imagePath) { %>
+        <img src="<%= article.imagePath %>" alt="Drake Updates " class="article-image">
+    <% } %>
+    
+
+      <div class="article-body"><%- article.sanitizedHtml %></div> 
+    
+    
+    </div>
+       
+
+
+
+       
+     
+
+    </body>
+</html>
