@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+      
+  <%- include('./partials/head.ejs') %>
+
+  <body>
+    <%- include('./partials/nav.ejs') %>
+    <div class="index-first">
+       
+    </div>
+
+    <div class="index-second">
+        <h2>Welcome to the Ultimate Drake Fan Website</h2>
+
+        <p>Welcome to the ultimate destination for fans of the one and only Drake! Whether you’ve been with him since the So Far Gone days, vibe to the unforgettable hits of Take Care, or are just discovering his music, this site is dedicated to celebrating the life, music, and legacy of the 6 God.
+
+            Drake, born Aubrey Drake Graham, has become one of the most influential artists of our generation. From his humble beginnings as an actor on Degrassi: The Next Generation to dominating the charts with iconic albums like Nothing Was the Same, Views, and Certified Lover Boy, Drake has consistently redefined the music industry.
+            
+            Here, you’ll find everything you need to stay connected to all things Drake:</p>
+
+           
+             
+    </div>
+    <div class="index-neuro">
+        <div class="index-g">
+            <h2>Here, you’ll find everything you need to stay connected to all things Drake:</h2>
+
+        <p>🎵 Music & Lyrics – Explore his groundbreaking albums, chart-topping singles, and the lyrics that resonate with millions of fans worldwide.</p>
+        
+        <p>📀 Discography(Albums & Mixtapes) – Relive the magic of every release, from his earliest mixtapes like Room for Improvement to his latest hits.</p>
+
+        <p>🎤 Tour Updates – Stay in the loop about upcoming concerts and tour dates, so you never miss the chance to see Drake perform live.</p>
+
+        <p>🌍 Drake’s Impact – Learn about his influence on music, pop culture, and the city of Toronto, which he continues to proudly represent.</p>
+
+        <p>Whether you're here to reminisce on classic tracks like “Marvins Room” and “Hotline Bling,” or celebrate his latest collaborations, this site is for you. Drake’s music has a unique way of making us feel, and this site is a space to connect with that magic.
+
+            So, grab a drink, press play on your favorite Drake song, and explore. Let’s honor the artistry, talent, and legacy of one of the greatest to ever do it.
+            
+            Started from the bottom, now we’re here!</p>
+        </div>
+
+        <div class="index-g">
+            <img class="index-neuropix1"     src="https://upload.wikimedia.org/wikipedia/commons/2/28/Drake_July_2016.jpg" 
+            alt="Drake performing in July 2016" 
+            >
+        </div>
+       
+
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+    <script>
+        function toggleMobileMenu(menu) {
+        var isOpen = menu.classList.toggle('open');
+        if (!isOpen) {
+            closeDropdowns(); // Close dropdowns when menu is closed
+        }
+      }
+      
+      // Function to toggle dropdown
+      function toggleDropdown(event) {
+          event.stopPropagation(); // Prevent propagation of the click event
+          var parentListItem = event.target.parentElement;
+          parentListItem.classList.toggle('open');
+      }
+      
+      // Function to close all dropdowns
+      function closeDropdowns() {
+          var dropdowns = document.querySelectorAll('.has-dropdown');
+          dropdowns.forEach(function(dropdown) {
+              dropdown.classList.remove('open');
+          });
+      }
+      
+      // Close dropdowns when clicking outside of them
+      document.addEventListener('click', function(event) {
+          var dropdowns = document.querySelectorAll('.has-dropdown');
+          dropdowns.forEach(function(dropdown) {
+              if (!dropdown.contains(event.target)) {
+                  dropdown.classList.remove('open');
+              }
+          });
+      });
+      
+      // Close dropdowns when the window is resized (for responsiveness)
+      window.addEventListener('resize', function() {
+          closeDropdowns();
+      });
+      
+      // Close dropdowns when the mobile menu is closed
+      document.getElementById('ham-icon').addEventListener('click', function(event) {
+          if (!event.currentTarget.classList.contains('open')) {
+              closeDropdowns();
+          }
+      });
+    </script>
+    
+  </body>
+</html>

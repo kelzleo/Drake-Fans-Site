@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/head.ejs', { title: 'Edit News' }) %>
+
+
+    <body>
+       <h1 class="new-head">Edit News</h1>
+
+       <form action="/updates/<%= article.id %>?_method=PUT" method="POST">  <%- include('../partials/form-updates.ejs') %></form>
+     
+
+    </body>
+</html>

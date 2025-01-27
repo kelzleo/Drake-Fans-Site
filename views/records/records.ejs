@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/head.ejs') %>
+
+    <body>
+        <%- include('../partials/nav.ejs') %>
+
+        <div class="records-first">
+            <h2>Records and Achievements</h2>
+
+            <p>Drake, the multi-talented artist from Toronto, has solidified his place in music history with countless records and awards. Since his debut in 2009, he has broken barriers and set new standards in the music industry, making an undeniable impact on the world of hip-hop, R&B, and beyond.</p>
+
+            <h2>Billboard Success:</h2>
+
+            <p>Drake is renowned for his dominance on the Billboard charts, where he has shattered numerous records. He holds the record for the most entries on the Billboard Hot 100 and has consistently topped the charts with hits such as "God’s Plan," "Hotline Bling," and "In My Feelings." His albums like Views, Nothing Was the Same, and Take Care have garnered global recognition, each achieving platinum status.</p>
+
+        </div>
+
+
+        <div class="record-2nd">
+            <div class="record-2ndpic">
+                <img src="/img/a4.JPG" alt="">
+            </div>
+            <div class="record-2ndpic">
+                <img src="/img/a7.JPG" alt="">
+            </div>
+        </div>
+
+        
+
+        <div class="records-container">
+            <h1 class="recors-mb-4"></h1>
+            <!-- Link to create a new post -->
+            <% if (user && user.isAdmin) { %>
+                <a href="/records/new" class="btn">New News</a>
+              <% } %>
+              
+            <!-- Grid container for the posts -->
+            <div class="records-posts-grid">
+              <!-- Loop through each post -->
+              <% posts.forEach(post => { %>
+                <div class="records-card">
+                  <div class="records-card-body">
+                    <!-- Display the title of the post -->
+                    <h4 class="class-title"><%= post.title %></h4>
+      
+                    <!-- Display the creation date of the post -->
+                    <div class="records-sub-title"><%= post.createdAt.toLocaleDateString() %></div>
+      
+                    <!-- Display the image in the preview -->
+                    <% if (post.imagePath) { %>
+                      <img src="<%= post.imagePath %>" alt="Post Image" class="records-article-image">
+                    <% } %>
+                  </div>
+      
+                  <!-- Display the description of the post -->
+                  <div class="records-class-text">
+                    <%= post.description %>
+                  </div>
+      
+                  <!-- Action buttons for Read More, Edit, and Delete -->
+                  <div class="records-btn-flex">
+                    <a href="/records/<%= post.slug %>" class="records-read-more">Read more</a>
+                    
+                    <% if (user && user.isAdmin) { %>
+                      <a href="/records/edit/<%= post.id %>" class="records-Edit">Edit</a>
+                      <form action="/records/<%= post.id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="records-btn-danger">Delete</button>
+                      </form>
+                    <% } %>
+                  </div>
+                  
+                </div>
+              <% }) %>
+            </div>
+          </div>
+          <%- include('../partials/footer.ejs') %>
+        <script>
+            function toggleMobileMenu(menu) {
+              var isOpen = menu.classList.toggle('open');
+              if (!isOpen) {
+                  closeDropdowns(); // Close dropdowns when menu is closed
+              }
+          }
+          
+          // Function to toggle dropdown
+          function toggleDropdown(event) {
+              event.stopPropagation(); // Prevent propagation of the click event
+              var parentListItem = event.target.parentElement;
+              parentListItem.classList.toggle('open');
+          }
+          
+          // Function to close all dropdowns
+          function closeDropdowns() {
+              var dropdowns = document.querySelectorAll('.has-dropdown');
+              dropdowns.forEach(function(dropdown) {
+                  dropdown.classList.remove('open');
+              });
+          }
+          
+          // Close dropdowns when clicking outside of them
+          document.addEventListener('click', function(event) {
+              var dropdowns = document.querySelectorAll('.has-dropdown');
+              dropdowns.forEach(function(dropdown) {
+                  if (!dropdown.contains(event.target)) {
+                      dropdown.classList.remove('open');
+                  }
+              });
+          });
+          
+          // Close dropdowns when the window is resized (for responsiveness)
+          window.addEventListener('resize', function() {
+              closeDropdowns();
+          });
+          
+          // Close dropdowns when the mobile menu is closed
+          document.getElementById('ham-icon').addEventListener('click', function(event) {
+              if (!event.currentTarget.classList.contains('open')) {
+                  closeDropdowns();
+              }
+          });
+
+        
+
+          
+          </script>
+    </body>
+</html>
