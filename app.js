@@ -34,9 +34,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-app.listen(3000, () => {
-    console.log('Listening on port 3000');
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
+
 
 // Main route for discography page
 app.get('/discography', async (req, res) => {
