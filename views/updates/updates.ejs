@@ -1,114 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('../partials/head.ejs') %>
+  <%- include('../partials/head.ejs') %>
+  <body>
+    <%- include('../partials/nav.ejs') %>
 
-    <body>
-        <%- include('../partials/nav.ejs') %>
+    <div class="updates-2nd">
+      <h2>overview</h2>
+      <p>
+        Stay up to date with the latest news and happenings from the world of Drake! Whether it’s a new album release, upcoming tour dates, collaborations with other artists, or personal milestones, this page brings you all the essential updates. We’ve got you covered on everything from new music drops to exclusive behind-the-scenes content, so you never miss a moment in the life of Champagne Papi.
+        Check back often for the freshest news, and keep up with Drake as he continues to shape the music world.
+      </p>
+    </div>
 
-        <div class="updates-2nd">
-            <h2>overview</h2>
-            <p>Stay up to date with the latest news and happenings from the world of Drake! Whether it’s a new album release, upcoming tour dates, collaborations with other artists, or personal milestones, this page brings you all the essential updates. We’ve got you covered on everything from new music drops to exclusive behind-the-scenes content, so you never miss a moment in the life of Champagne Papi.
+    <div class="container">
+      <h1 class="mb-4"></h1>
+      <!-- Link to create a new post (only visible to admin users) -->
+      <% if (user && user.isAdmin) { %>
+        <a href="/updates/new" class="btn">New News</a>
+      <% } %>
 
-                Check back often for the freshest news, and keep up with Drake as he continues to shape the music world.</p>
-
-
-        </div>
-
-        <div class="container">
-            <h1 class="mb-4"></h1>
-            <!-- Link to create a new post -->
-            <% if (user && user.isAdmin) { %>
-                <a href="/updates/new" class="btn">New News</a>
-              <% } %>
-              
-            <!-- Grid container for the posts -->
-            <div class="posts-grid">
-              <!-- Loop through each post -->
-              <% posts.forEach(post => { %>
-                <div class="card">
-                  <div class="card-body">
-                    <!-- Display the title of the post -->
-                    <h4 class="class-title"><%= post.title %></h4>
-      
-                    <!-- Display the creation date of the post -->
-                    <div class="sub-title"><%= post.createdAt.toLocaleDateString() %></div>
-      
-                    <!-- Display the image in the preview -->
-                    <% if (post.imagePath) { %>
-                      <img src="<%= post.imagePath %>" alt="Post Image" class="article-image">
-                    <% } %>
+      <!-- Grid container for the posts -->
+      <div class="posts-grid">
+        <% posts.forEach(post => { %>
+          <div class="card">
+            <!-- Clickable main content area -->
+            <a href="/updates/<%= post.slug %>" class="card-link">
+              <div class="card-body">
+                <h4 class="class-title"><%= post.title %></h4>
+                <div class="sub-title"><%= post.createdAt.toLocaleDateString() %></div>
+                <% if (post.imagePath) { %>
+                  <div class="image-container">
+                    <img 
+                      src="/updates/image/<%= post.imagePath %>" 
+                      alt="<%= post.title %>" 
+                      class="article-image"
+                      onerror="this.onerror=null; this.src='/images/placeholder.jpg';"
+                    >
                   </div>
-      
-                  <!-- Display the description of the post -->
-                  <div class="class-text">
-                    <%= post.description %>
-                  </div>
-      
-                  <!-- Action buttons for Read More, Edit, and Delete -->
-                  <div class="btn-flex">
-                    <a href="/updates/<%= post.slug %>" class="read-more">Read more</a>
-                    
-                    <% if (user && user.isAdmin) { %>
-                      <a href="/updates/edit/<%= post.id %>" class="Edit">Edit</a>
-                      <form action="/updates/<%= post.id %>?_method=DELETE" method="POST">
-                        <button type="submit" class="btn-danger">Delete</button>
-                      </form>
-                    <% } %>
-                  </div>
-                  
+                <% } %>
+                <div class="class-text">
+                  <%= post.description %>
                 </div>
-              <% }) %>
-            </div>
+              </div>
+            </a>
+
+            <!-- Below the clickable area, display admin controls or a "Read more" link -->
+            <% if (user && user.isAdmin) { %>
+              <div class="btn-flex">
+                <a href="/updates/edit/<%= post.id %>" class="Edit">Edit</a>
+                <form 
+                  action="/updates/<%= post.id %>?_method=DELETE" 
+                  method="POST"
+                  onsubmit="return confirm('Are you sure you want to delete this post?');"
+                >
+                  <button type="submit" class="btn-danger">Delete</button>
+                </form>
+              </div>
+            <% } else { %>
+              <div class="btn-flex">
+                <a href="/updates/<%= post.slug %>" class="read-more">Read more</a>
+              </div>
+            <% } %>
           </div>
-          <%- include('../partials/footer.ejs') %>
-        <script>
-            function toggleMobileMenu(menu) {
-              var isOpen = menu.classList.toggle('open');
-              if (!isOpen) {
-                  closeDropdowns(); // Close dropdowns when menu is closed
-              }
-          }
-          
-          // Function to toggle dropdown
-          function toggleDropdown(event) {
-              event.stopPropagation(); // Prevent propagation of the click event
-              var parentListItem = event.target.parentElement;
-              parentListItem.classList.toggle('open');
-          }
-          
-          // Function to close all dropdowns
-          function closeDropdowns() {
-              var dropdowns = document.querySelectorAll('.has-dropdown');
-              dropdowns.forEach(function(dropdown) {
-                  dropdown.classList.remove('open');
-              });
-          }
-          
-          // Close dropdowns when clicking outside of them
-          document.addEventListener('click', function(event) {
-              var dropdowns = document.querySelectorAll('.has-dropdown');
-              dropdowns.forEach(function(dropdown) {
-                  if (!dropdown.contains(event.target)) {
-                      dropdown.classList.remove('open');
-                  }
-              });
-          });
-          
-          // Close dropdowns when the window is resized (for responsiveness)
-          window.addEventListener('resize', function() {
-              closeDropdowns();
-          });
-          
-          // Close dropdowns when the mobile menu is closed
-          document.getElementById('ham-icon').addEventListener('click', function(event) {
-              if (!event.currentTarget.classList.contains('open')) {
-                  closeDropdowns();
-              }
-          });
+        <% }) %>
+      </div>
+    </div>
 
-        
+    <%- include('../partials/footer.ejs') %>
 
-          
-          </script>
-    </body>
+    <script>
+      function toggleMobileMenu(menu) {
+        var isOpen = menu.classList.toggle('open');
+        if (!isOpen) {
+          closeDropdowns(); // Close dropdowns when menu is closed
+        }
+      }
+      
+      // Function to toggle dropdown
+      function toggleDropdown(event) {
+        event.stopPropagation(); // Prevent propagation of the click event
+        var parentListItem = event.target.parentElement;
+        parentListItem.classList.toggle('open');
+      }
+      
+      // Function to close all dropdowns
+      function closeDropdowns() {
+        var dropdowns = document.querySelectorAll('.has-dropdown');
+        dropdowns.forEach(function(dropdown) {
+          dropdown.classList.remove('open');
+        });
+      }
+      
+      // Close dropdowns when clicking outside of them
+      document.addEventListener('click', function(event) {
+        var dropdowns = document.querySelectorAll('.has-dropdown');
+        dropdowns.forEach(function(dropdown) {
+          if (!dropdown.contains(event.target)) {
+            dropdown.classList.remove('open');
+          }
+        });
+      });
+      
+      // Close dropdowns when the window is resized (for responsiveness)
+      window.addEventListener('resize', function() {
+        closeDropdowns();
+      });
+      
+      // Close dropdowns when the mobile menu is closed
+      document.getElementById('ham-icon').addEventListener('click', function(event) {
+        if (!event.currentTarget.classList.contains('open')) {
+          closeDropdowns();
+        }
+      });
+    </script>
+  </body>
 </html>

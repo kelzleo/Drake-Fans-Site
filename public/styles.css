@@ -12,6 +12,12 @@
   grid-template-columns: repeat(2, 1fr); /* 2 columns, each taking up equal space */
   gap: 20px;  /* Space between grid items */
   margin-top: 30px;
+  justify-items: stretch; /* Ensure grid items fill each cell */
+}
+
+/* Ensure direct children of the grid span one cell (optional) */
+.posts-grid > .card-link {
+  grid-column: span 1;
 }
 
 /* Styling for each card (post) */
@@ -23,10 +29,18 @@
   padding: 20px;
 }
 
+/* Card-link styling */
+.card-link {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
 /* Title of each post */
 .class-title {
   font-size: 1.5em;
-  color: #333;
   margin-bottom: 10px;
   color: green;
 }
@@ -45,9 +59,10 @@
   max-height: 300px;         /* Limit the image height */
   object-fit: contain;       /* Prevent the image from being cropped */
   border-radius: 8px;        /* Round image corners */
-  display: block;            /* Make sure the image is a block element (fixes spacing issues) */
+  display: block;            /* Fix spacing issues */
   margin-bottom: 15px;       /* Add some space below the image */
 }
+
 /* Description of each post */
 .class-text {
   font-size: 1em;
@@ -580,7 +595,7 @@ header a {
   left: 100%;
   width: 100%;
   height: 100%;
-  transition: left 1s ease-in-out;
+  transition: left 2s ease-in-out;
 }
 
 .carousel-slide.active {
@@ -619,6 +634,19 @@ header a {
   .disco-first{
    
   }
+
+  .disco-2nd h1{
+    font-size: 1.8rem !important;
+  font-weight: bold !important;
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  }
+  .disco-2nd p{
+    font-size: 1rem !important;
+  line-height: 1.6 !important;
+  align-items: center;
+  }
   .carousel {
     position: relative;
     overflow: hidden;
@@ -632,7 +660,7 @@ header a {
     left: 100%;
     width: 100%;
     height: 100%;
-    transition: left 1s ease-in-out;
+    transition: left 2s ease-in-out;
   }
   
   .carousel-slide.active {
@@ -899,10 +927,13 @@ header a {
 }
 
 .records-article-image {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-  margin-top: 10px;
+  width: 100%;               /* Ensure the image is responsive */
+  height: auto;              /* Keep the aspect ratio intact */
+  max-height: 300px;         /* Limit the image height */
+  object-fit: contain;       /* Prevent the image from being cropped */
+  border-radius: 8px;        /* Round image corners */
+  display: block;            /* Make sure the image is a block element (fixes spacing issues) */
+  margin-bottom: 15px;  
 }
 
 /* Description and Action Buttons */
@@ -947,7 +978,160 @@ header a {
 .records-Edit:hover, .records-btn-danger:hover {
   background-color: #e03e2f;
 }
+.streaming-first{
+  background-image: url("img/b3.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 70vh;
+  width: 100%;
 
+  box-shadow: inset 0 0 0 100vmax rgba(0, 0, 0, .3);
+
+}
+
+.streaming-second{
+  padding: 20px;
+  font-size: 20px !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+/* Grid Layout */
+.kelz-images {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);  /* two equal columns */
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* Responsive adjustment (optional)
+   Uncomment the next block if you want one column on very small screens */
+/*
+@media (max-width: 600px) {
+  .kelz-images {
+    grid-template-columns: 1fr;
+  }
+}
+*/
+
+.kelz-1 {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+  
+}
+
+/* When the element becomes visible (class added via JavaScript) */
+.kelz-1.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger animation delays for each item (adjust as needed) */
+.kelz-1:nth-child(1) {
+  transition-delay: 0.5s;
+}
+.kelz-1:nth-child(2) {
+  transition-delay: 1s;
+}
+.kelz-1:nth-child(3) {
+  transition-delay: 1.5s;
+}
+.kelz-1:nth-child(4) {
+  transition-delay: 2s;
+}
+
+/* Make images fill their container */
+.kelz-2 {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Grid Layout */
+.kelz-images {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);  /* two equal columns */
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* Responsive adjustment (optional)
+   Uncomment the next block if you want one column on very small screens */
+/*
+@media (max-width: 600px) {
+  .kelz-images {
+    grid-template-columns: 1fr;
+  }
+}
+*/
+
+.kelz-home {
+  opacity: 0;
+
+  transform: translateY(calc(20px + var(--zigzag-offset, 0)));
+  transition: opacity 1s ease-out, transform 1s ease-out;
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* Creates a square (1:1 aspect ratio) */
+  overflow: hidden;
+}
+
+/* When the element becomes visible (class added via JavaScript) */
+.kelz-home.visible {
+  opacity: 1;
+  transform: translateY(var(--zigzag-offset, 0));
+}
+.kelz-home:nth-child(odd) {
+  --zigzag-offset: -30px;   /* Odd items stay at baseline */
+}
+
+.kelz-home:nth-child(even) {
+  --zigzag-offset: 30px;  /* Even items are shifted down by 20px */
+}
+
+/* Stagger animation delays for each item (adjust as needed) */
+.kelz-home:nth-child(1) {
+  transition-delay: 0.5s;
+}
+.kelz-home:nth-child(2) {
+  transition-delay: 1s;
+}
+.kelz-home:nth-child(3) {
+  transition-delay: 1.5s;
+}
+.kelz-home:nth-child(4) {
+  transition-delay: 2s;
+}
+
+/* Make images fill their container */
+.kelz-2home {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* Ensures the image covers the container without distortion */
+  border-radius: 50%; /* Makes the image circular */
+  display: block;
+}
+@media (min-width: 1024px) {
+  .kelz-images {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .kelz-home {
+    max-width: 250px;   /* Limits the container width to 150px */
+    width: 100%;
+    margin: 0 auto;     /* Centers the container within its grid cell */
+    /* The padding-top: 100% rule keeps the container square */
+  }
+}
 /* Media Queries for Larger Screens */
 @media screen and (min-width: 600px) {
   .records-posts-grid {

@@ -49,6 +49,22 @@
 
     </div>
 
+    <div class="kelz-images">
+        <div class="kelz-home">
+            <img class="kelz-2home" src="/img/f1.jpeg">
+ 
+         </div>
+         <div class="kelz-home">
+             <img class="kelz-2home" src="/img/f2.jpeg">
+         </div>
+         <div class="kelz-home">
+             <img class="kelz-2home" src="/img/f3.jpeg">
+         </div>
+         <div class="kelz-home">
+             <img class="kelz-2home" src="/img/f4.jpeg">
+         </div>
+        </div>
+
     <%- include('./partials/footer.ejs') %>
     <script>
         function toggleMobileMenu(menu) {
@@ -94,6 +110,22 @@
               closeDropdowns();
           }
       });
+      
+      document.addEventListener("DOMContentLoaded", function () {
+  const items = document.querySelectorAll(".kelz-home");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      } else {
+        entry.target.classList.remove("visible");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  items.forEach(item => observer.observe(item));
+});
     </script>
     
   </body>

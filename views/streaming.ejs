@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+      
+  <%- include('./partials/head.ejs') %>
+
+  <body>
+    <%- include('./partials/nav.ejs') %>
+    <div class="streaming-first">
+       
+    </div>
+
+    <div class="streaming-second">
+        <h2>Streaming Guide</h2>
+        <p>Welcome to the Streaming Guide, your go-to resource for enjoying Drake’s music across all major platforms. Whether you're looking to stream his latest hits, revisit classic albums, or discover exclusive content, we’ve got you covered.</p>
+       
+    </div>
+    <div class="index-neuro">
+        <div class="index-g">
+           <p>📀 Where to Listen
+            Drake’s discography is available on Spotify, Apple Music, Tidal, YouTube Music, Amazon Music, and SoundCloud. Each platform offers unique features, from high-quality lossless streaming to curated playlists and exclusive releases.</p> 
+            
+           <p> 🔥 Must-Stream Albums & Playlists
+            
+            Top Albums: Take Care, Nothing Was the Same, Views, Scorpion, Her Loss, For All the Dogs
+            Essential Playlists: Official Drake playlists like This Is Drake (Spotify), Essentials (Apple Music), and fan-curated collections
+            🚀 Maximize Your Streaming Experience</p>
+            
+           <P> Follow Drake on your preferred platform for instant updates on new releases
+            Add his albums and tracks to your personal playlists to keep them on repeat
+            Support his music by streaming from official sources
+            🎥 More Than Music</P>
+            <P>Drake’s influence extends beyond audio—catch his music videos, interviews, and live performances on YouTube and Vevo.
+            
+                No matter where you stream, this guide ensures you never miss a beat from The Boy. Start streaming now! 🎶</P>
+            
+            
+        </div>
+
+        <div class="index-g">
+            <img class="index-neuropix1"     src="/img/b2.jpeg" 
+            alt="Drake performing in July 2016" 
+            >
+        </div>
+       
+
+    </div>
+
+    <div class="kelz-images">
+        <div class="kelz-1">
+            <img class="kelz-2" src="/img/e1.jpeg">
+ 
+         </div>
+         <div class="kelz-1">
+             <img class="kelz-2" src="/img/e2.jpeg">
+         </div>
+         <div class="kelz-1">
+             <img class="kelz-2" src="/img/e3.jpeg">
+         </div>
+         <div class="kelz-1">
+             <img class="kelz-2" src="/img/e4.jpeg">
+         </div>
+        </div>
+        
+
+    <%- include('./partials/footer.ejs') %>
+    <script>
+        function toggleMobileMenu(menu) {
+        var isOpen = menu.classList.toggle('open');
+        if (!isOpen) {
+            closeDropdowns(); // Close dropdowns when menu is closed
+        }
+      }
+      
+      // Function to toggle dropdown
+      function toggleDropdown(event) {
+          event.stopPropagation(); // Prevent propagation of the click event
+          var parentListItem = event.target.parentElement;
+          parentListItem.classList.toggle('open');
+      }
+      
+      // Function to close all dropdowns
+      function closeDropdowns() {
+          var dropdowns = document.querySelectorAll('.has-dropdown');
+          dropdowns.forEach(function(dropdown) {
+              dropdown.classList.remove('open');
+          });
+      }
+      
+      // Close dropdowns when clicking outside of them
+      document.addEventListener('click', function(event) {
+          var dropdowns = document.querySelectorAll('.has-dropdown');
+          dropdowns.forEach(function(dropdown) {
+              if (!dropdown.contains(event.target)) {
+                  dropdown.classList.remove('open');
+              }
+          });
+      });
+      
+      // Close dropdowns when the window is resized (for responsiveness)
+      window.addEventListener('resize', function() {
+          closeDropdowns();
+      });
+      
+      // Close dropdowns when the mobile menu is closed
+      document.getElementById('ham-icon').addEventListener('click', function(event) {
+          if (!event.currentTarget.classList.contains('open')) {
+              closeDropdowns();
+          }
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+  const items = document.querySelectorAll(".kelz-1");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      } else {
+        entry.target.classList.remove("visible");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  items.forEach(item => observer.observe(item));
+});
+    </script>
+    
+  </body>
+</html>

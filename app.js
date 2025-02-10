@@ -1,48 +1,57 @@
 const express = require('express');
-require('dotenv').config(); // Load environment variables
+require('dotenv').config();
 const mongoose = require('mongoose');
 const Article = require('./models/adb');
-const discographyRoutes = require('./routes/discography');
 const methodOverride = require('method-override');
-const updatesRoutes = require('./routes/updates');
-const authRoutes = require('./routes/auth');
-const passport = require('./config/passport-setup');
-const indexRoutes = require('./routes/index')
-const recordRoutes = require('./routes/records')
-
 const session = require('express-session');
-const User = require('./models/users')
+const passport = require('./config/passport-setup');
 const flash = require('connect-flash');
+const Grid = require('gridfs-stream');
 
 const app = express();
 
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-
+// Express Middleware
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.use(session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: true
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-const PORT = process.env.PORT || 3000;
+// Initialize gfs globally
+let gfs;
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true
+})
+.then(() => {
+  console.log('MongoDB connected');
+  
+  // Init stream
+  gfs = Grid(mongoose.connection.db, mongoose.mongo);
+  gfs.collection('uploads');
+  app.locals.gfs = gfs;
+
+  // Mount routes and start server
+  mountRoutesAndStartServer();
+})
+.catch(err => {
+  console.error('MongoDB connection error:', err);
+  process.exit(1);
 });
 
-
-// Main route for discography page
-app.get('/discography', async (req, res) => {
+function mountRoutesAndStartServer() {
+  // Category routes
+  app.get('/discography', async (req, res) => {
     try {
       const discographyPosts = await Article.find({ category: 'Discography' }).sort({ createdAt: 'desc' });
       res.render('discography/discography', { title: 'Discography', posts: discographyPosts, user: req.user });
@@ -54,48 +63,58 @@ app.get('/discography', async (req, res) => {
 
   app.get('/updates', async (req, res) => {
     try {
-        // Fetch posts with category "Updates"
-        const updatesPosts = await Article.find({ category: 'Updates' }).sort({ createdAt: 'desc' });
-        res.render('updates/updates', { title: 'Updates', posts: updatesPosts, user: req.user });
+      const updatesPosts = await Article.find({ category: 'Updates' }).sort({ createdAt: 'desc' });
+      res.render('updates/updates', { title: 'Updates', posts: updatesPosts, user: req.user });
     } catch (error) {
-        console.error('Error fetching updates posts:', error);
-        res.status(500).send('Internal Server Error');
+      console.error('Error fetching updates posts:', error);
+      res.status(500).send('Internal Server Error');
     }
-});
+  });
 
-
-app.get('/records', async (req, res) => {
+  app.get('/records', async (req, res) => {
     try {
-        // Fetch posts with category "Records"
-        const recordsPosts = await Article.find({ category: 'Records' }).sort({ createdAt: 'desc' });
-        res.render('records/records', { title: 'Records', posts: recordsPosts, user: req.user });
+      const recordsPosts = await Article.find({ category: 'Records' }).sort({ createdAt: 'desc' });
+      res.render('records/records', { title: 'Records', posts: recordsPosts, user: req.user });
     } catch (error) {
-        console.error('Error fetching updates posts:', error);
-        res.status(500).send('Internal Server Error');
+      console.error('Error fetching records posts:', error);
+      res.status(500).send('Internal Server Error');
     }
-});
+  });
 
-
-
-
-app.get('/category/:category', async (req, res) => {
+  app.get('/category/:category', async (req, res) => {
     try {
-        const posts = await Article.find({ category: req.params.category }).sort({ createdAt: 'desc' });
-        res.render('category', { title: req.params.category, posts: posts });
+      const posts = await Article.find({ category: req.params.category }).sort({ createdAt: 'desc' });
+      res.render('category', { title: req.params.category, posts: posts, user: req.user });
     } catch (error) {
-        console.error('Error fetching category posts:', error);
-        res.status(500).send('Internal Server Error');
+      console.error('Error fetching category posts:', error);
+      res.status(500).send('Internal Server Error');
     }
-});
+  });
 
-// Use the discography routes
-app.use('/discography', discographyRoutes);
-app.use('/updates', updatesRoutes)
-app.use('/',  indexRoutes)
-app.use('/records', recordRoutes)
-app.use(authRoutes)
+  // Mount route files
+  const discographyRoutes = require('./routes/discography');
+  const updatesRoutes = require('./routes/updates');
+  const authRoutes = require('./routes/auth');
+  const indexRoutes = require('./routes/index');
+  const recordRoutes = require('./routes/records');
+  const streamingRoutes = require('./routes/streaming')
 
-app.use((err, req, res, next) => {
-    console.error(err);
+  app.use('/discography', discographyRoutes);
+  app.use('/updates', updatesRoutes);
+  app.use('/', indexRoutes);
+  app.use('/records', recordRoutes);
+  app.use('/streaming', streamingRoutes)
+  app.use(authRoutes);
+
+  // Error handling middleware
+  app.use((err, req, res, next) => {
+    console.error('Error:', err);
     res.status(500).send('Internal Server Error');
-});
+  });
+
+  // Start the server
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}

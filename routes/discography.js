@@ -2,16 +2,15 @@ const express = require('express');
 const Article = require('../models/adb');
 const router = express.Router();
 const multer = require('multer');
-const User = require('../models/users')
-const { isAdmin, isAuthenticated } = require('../config/auth');
+const storage = require('../config/upload');
+const upload = multer({ storage });
+const { isAdmin } = require('../config/auth');
+const mongoose = require('mongoose');
 
-// Set up multer for file upload
-const upload = multer({ dest: 'public/uploads/' });
-
-// Public routes
+// Routes
 router.get('/', async (req, res) => {
   try {
-    const posts = await Article.find({ category: 'Discography' });
+    const posts = await Article.find({ category: 'Discography' }).sort({ createdAt: 'desc' });
     res.render('discography/index', { posts, user: req.user });
   } catch (error) {
     console.error('Error fetching discography posts:', error);
@@ -19,49 +18,97 @@ router.get('/', async (req, res) => {
   }
 });
 
-
-
-// Admin routes
 router.get('/new', isAdmin, (req, res) => {
-  res.render('discography/new', { title: 'New Discography/News Post', article: new Article(), user: req.user });
+  res.render('discography/new', { 
+    title: 'New Discography/News Post', 
+    article: new Article(), 
+    user: req.user 
+  });
+});
+
+router.post('/', isAdmin, upload.single('image'), async (req, res) => {
+  try {
+    const article = new Article({
+      title: req.body.title,
+      description: req.body.description,
+      markdown: req.body.markdown,
+      category: 'Discography',
+      imagePath: req.file ? req.file.filename : null
+    });
+
+    await article.save();
+    res.redirect(`/discography/${article.slug}`);
+  } catch (error) {
+    console.error('Error creating discography post:', error);
+    res.render('discography/new', { 
+      article: req.body, 
+      user: req.user,
+      error: 'Error creating post'
+    });
+  }
 });
 
 router.get('/:slug', async (req, res) => {
   try {
-    const article = await Article.findOne({ slug: req.params.slug, category: 'Discography' });
+    const article = await Article.findOne({ slug: req.params.slug });
     if (!article) return res.status(404).send('Post not found');
-    res.render('discography/show', { title: 'Show Discography Post', article, user: req.user });
+    res.render('discography/show', { article, user: req.user });
   } catch (error) {
     console.error('Error fetching discography post:', error);
     res.status(500).send('Internal Server Error');
   }
 });
-
-router.post('/', isAdmin, upload.single('image'), async (req, res, next) => {
-  req.article = new Article();
-  req.article.category = 'Discography';
-  if (req.file) req.article.imagePath = `/uploads/${req.file.filename}`;
-  next();
-}, saveArticleAndRedirect('new'));
 
 router.get('/edit/:id', isAdmin, async (req, res) => {
   try {
     const article = await Article.findById(req.params.id);
-    res.render('discography/edit', { title: 'Edit Discography Post', article, user: req.user });
+    res.render('discography/edit', { article, user: req.user });
   } catch (error) {
     console.error('Error fetching discography post:', error);
     res.status(500).send('Internal Server Error');
   }
 });
 
-router.put('/:id', isAdmin, upload.single('image'), async (req, res, next) => {
-  req.article = await Article.findById(req.params.id);
-  if (req.file) req.article.imagePath = `/uploads/${req.file.filename}`;
-  next();
-}, saveArticleAndRedirect('edit'));
+router.put('/:id', isAdmin, upload.single('image'), async (req, res) => {
+  try {
+    const article = await Article.findById(req.params.id);
+    article.title = req.body.title;
+    article.description = req.body.description;
+    article.markdown = req.body.markdown;
+    
+    if (req.file) {
+      // Delete old image if exists
+      if (article.imagePath) {
+        const gfs = req.app.locals.gfs;
+        try {
+          const files = await gfs.files.deleteOne({ filename: article.imagePath });
+          console.log('Old file deleted:', files);
+        } catch (err) {
+          console.error('Error deleting old image:', err);
+        }
+      }
+      article.imagePath = req.file.filename;
+    }
+
+    await article.save();
+    res.redirect(`/discography/${article.slug}`);
+  } catch (error) {
+    console.error('Error updating discography post:', error);
+    res.render('discography/edit', { 
+      article: req.body, 
+      user: req.user,
+      error: 'Error updating post'
+    });
+  }
+});
 
 router.delete('/:id', isAdmin, async (req, res) => {
   try {
+    const article = await Article.findById(req.params.id);
+    if (article.imagePath) {
+      const gfs = req.app.locals.gfs;
+      await gfs.files.deleteOne({ filename: article.imagePath });
+    }
     await Article.findByIdAndDelete(req.params.id);
     res.redirect('/discography');
   } catch (error) {
@@ -70,20 +117,21 @@ router.delete('/:id', isAdmin, async (req, res) => {
   }
 });
 
-// Helper function for saving articles
-function saveArticleAndRedirect(path) {
-  return async (req, res) => {
-    let article = req.article;
-    article.title = req.body.title;
-    article.description = req.body.description;
-    article.markdown = req.body.markdown;
-    try {
-      await article.save();
-      res.redirect(`/discography/${article.slug}`);
-    } catch (e) {
-      res.render(`discography/${path}`, { article, user: req.user });
+router.get('/image/:filename', async (req, res) => {
+  try {
+    const gfs = req.app.locals.gfs;
+    const file = await gfs.files.findOne({ filename: req.params.filename });
+    
+    if (!file || file.length === 0) {
+      return res.status(404).send('File not found');
     }
-  };
-}
+
+    const readstream = gfs.createReadStream(file.filename);
+    readstream.pipe(res);
+  } catch (error) {
+    console.error('Error retrieving image:', error);
+    res.status(500).send('Error retrieving image');
+  }
+});
 
 module.exports = router;
