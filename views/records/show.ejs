@@ -4,6 +4,7 @@
 
 
     <body>
+      <%- include('../partials/nav.ejs') %>
        <h1 class="new-head"><%= article.title %></h1>
        <div><%= article.createdAt.toLocaleDateString() %>
         <a href="/records" class="all-articles">Latest News And Updates</a>
@@ -26,7 +27,53 @@
 
 
        
-     
+    <%- include('../partials/footer.ejs') %>
+
+    <script>
+      function toggleMobileMenu(menu) {
+        var isOpen = menu.classList.toggle('open');
+        if (!isOpen) {
+          closeDropdowns(); // Close dropdowns when menu is closed
+        }
+      }
+      
+      // Function to toggle dropdown
+      function toggleDropdown(event) {
+        event.stopPropagation(); // Prevent propagation of the click event
+        var parentListItem = event.target.parentElement;
+        parentListItem.classList.toggle('open');
+      }
+      
+      // Function to close all dropdowns
+      function closeDropdowns() {
+        var dropdowns = document.querySelectorAll('.has-dropdown');
+        dropdowns.forEach(function(dropdown) {
+          dropdown.classList.remove('open');
+        });
+      }
+      
+      // Close dropdowns when clicking outside of them
+      document.addEventListener('click', function(event) {
+        var dropdowns = document.querySelectorAll('.has-dropdown');
+        dropdowns.forEach(function(dropdown) {
+          if (!dropdown.contains(event.target)) {
+            dropdown.classList.remove('open');
+          }
+        });
+      });
+      
+      // Close dropdowns when the window is resized (for responsiveness)
+      window.addEventListener('resize', function() {
+        closeDropdowns();
+      });
+      
+      // Close dropdowns when the mobile menu is closed
+      document.getElementById('ham-icon').addEventListener('click', function(event) {
+        if (!event.currentTarget.classList.contains('open')) {
+          closeDropdowns();
+        }
+      });
+    </script>
 
     </body>
 </html>
