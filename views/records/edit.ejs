@@ -6,7 +6,10 @@
     <body>
        <h1 class="new-head">Edit News</h1>
 
-       <form action="/records/<%= article.id %>?_method=PUT" method="POST">  <%- include('../partials/form-records.ejs') %></form>
+       <form action="/records/<%= article.id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+        <%- include('../partials/form-records.ejs') %>
+      </form>
+      
      
 
     </body>

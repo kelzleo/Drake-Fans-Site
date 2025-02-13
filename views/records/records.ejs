@@ -29,51 +29,57 @@
         
 
         <div class="records-container">
-            <h1 class="recors-mb-4"></h1>
-            <!-- Link to create a new post -->
-            <% if (user && user.isAdmin) { %>
-                <a href="/records/new" class="btn">New News</a>
-              <% } %>
-              
-            <!-- Grid container for the posts -->
-            <div class="records-posts-grid">
-              <!-- Loop through each post -->
-              <% posts.forEach(post => { %>
-                <div class="records-card">
+          <% if (user && user.isAdmin) { %>
+            <a href="/records/new" class="btn">New Discography</a>
+          <% } %>
+      
+          <div class="records-posts-grid">
+            <% posts.forEach(post => { %>
+              <div class="records-card">
+                <!-- Clickable area (card content) -->
+                <a href="/records/<%= post.slug %>" class="card-link">
                   <div class="records-card-body">
-                    <!-- Display the title of the post -->
                     <h4 class="class-title"><%= post.title %></h4>
-      
-                    <!-- Display the creation date of the post -->
                     <div class="records-sub-title"><%= post.createdAt.toLocaleDateString() %></div>
-      
-                    <!-- Display the image in the preview -->
-                    <% if (post.imagePath) { %>
-                      <img src="<%= post.imagePath %>" alt="Post Image" class="records-article-image">
-                    <% } %>
-                  </div>
-      
-                  <!-- Display the description of the post -->
-                  <div class="records-class-text">
-                    <%= post.description %>
-                  </div>
-      
-                  <!-- Action buttons for Read More, Edit, and Delete -->
-                  <div class="records-btn-flex">
-                    <a href="/records/<%= post.slug %>" class="records-read-more">Read more</a>
                     
-                    <% if (user && user.isAdmin) { %>
-                      <a href="/records/edit/<%= post.id %>" class="records-Edit">Edit</a>
-                      <form action="/records/<%= post.id %>?_method=DELETE" method="POST">
-                        <button type="submit" class="records-btn-danger">Delete</button>
-                      </form>
+                    <% if (post.imagePath) { %>
+                      <div class="image-container">
+                        <img 
+                          src="/records/image/<%= post.imagePath %>" 
+                          alt="<%= post.title %>"
+                          class="records-article-image"
+                          onerror="this.onerror=null; this.src='/images/placeholder.jpg';"
+                        >
+                      </div>
                     <% } %>
+                    
+                    <div class="records-class-text">
+                      <%= post.description %>
+                    </div>
                   </div>
-                  
-                </div>
-              <% }) %>
-            </div>
+                </a>
+      
+                <!-- Admin controls outside of the clickable area -->
+                <% if (user && user.isAdmin) { %>
+                  <div class="btn-flex">
+                    <a href="/records/edit/<%= post.id %>" class="Edit">
+                      Edit
+                    </a>
+                    <form 
+                      action="/records/<%= post.id %>?_method=DELETE" 
+                      method="POST"
+                      onsubmit="return confirm('Are you sure you want to delete this post?');"
+                    >
+                      <button type="submit" class="btn-danger">
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                <% } %>
+              </div>
+            <% }) %>
           </div>
+        </div>
           <%- include('../partials/footer.ejs') %>
         <script>
             function toggleMobileMenu(menu) {

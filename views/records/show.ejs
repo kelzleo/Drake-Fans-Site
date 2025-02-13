@@ -7,14 +7,16 @@
       <%- include('../partials/nav.ejs') %>
        <h1 class="new-head"><%= article.title %></h1>
        <div><%= article.createdAt.toLocaleDateString() %>
-        <a href="/records" class="all-articles">Latest News And Updates</a>
-       <a href="/records/edit/<%= article.id %>" class="edit-articles"> 
-        Edit
-
-       </a></div>
+        <a href="/records" class="all-articles">Latest Records</a>
+        <% if (user && user.isAdmin) { %>
+          <a href="/records/edit/<%= article.id %>" class="edit-articles"> 
+            Edit
+          </a>
+        <% } %>
+       </div>
 
        <% if (article.imagePath) { %>
-        <img src="<%= article.imagePath %>" alt="Drake Updates " class="article-image">
+        <img src="/records/image/<%= article.imagePath %>" alt="Drake Updates" class="article-image">
     <% } %>
     
 
@@ -27,6 +29,7 @@
 
 
        
+     
     <%- include('../partials/footer.ejs') %>
 
     <script>
@@ -74,6 +77,5 @@
         }
       });
     </script>
-
     </body>
 </html>

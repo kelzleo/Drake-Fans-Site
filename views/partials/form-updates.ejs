@@ -15,8 +15,11 @@
     </div>
 
     <div class="form-group">
-        <label for="image">Image</label>
-        <input type="file" name="image" id="image" class="form-control" required>
+        <label for="image">Image</label><input type="file" name="image" id="image" class="form-control" <%= article ? '' : 'required' %>>
+        <% if (article && article.imagePath) { %>
+            <p>Current Image:</p>
+            <img src="<%= article.imagePath %>" alt="Current Image" style="max-width: 200px;">
+        <% } %>
     </div>
 
     <a href="/" class="btn-cancel">Cancel</a>

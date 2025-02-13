@@ -854,6 +854,80 @@ header a {
 }
 }
 
+/* Base styles (mobile-first) */
+/* Fullwidth grid wrapper to force full-bleed */
+.fullwidth-grid {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 1rem;
+  background-color: #f9f9f9; /* Optional background color */
+}
+
+/* Mobile-First Base Styles for Latest Posts */
+.latest-posts h2 {
+  font-size: 1.75rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.latest-posts .post-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.latest-posts .post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.latest-posts .post-card a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.latest-posts .post-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.latest-posts .post-card p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+.latest-posts .post-card .post-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.latest-posts h2{
+  color: green !important;
+}
+/* Grid Layout for Larger Screens */
+@media (min-width: 768px) {
+  .fullwidth-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .fullwidth-grid h2 {
+    grid-column: 1 / -1; /* Heading spans full grid width */
+    font-size: 2rem;
+  }
+}
+
+
 /* Records Section */
 .records-first {
   padding: 20px;
@@ -989,6 +1063,7 @@ header a {
   box-shadow: inset 0 0 0 100vmax rgba(0, 0, 0, .3);
 
 }
+
 
 .streaming-second{
   padding: 20px;
@@ -1227,6 +1302,7 @@ header a {
   background-color: #002d5a;
   padding: 20px;
     text-align: center !important;
+    height: 300px;
 }
 
 .footer p{

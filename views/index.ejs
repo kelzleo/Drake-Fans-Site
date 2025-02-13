@@ -65,6 +65,134 @@
          </div>
         </div>
 
+
+         <!-- NEW: Latest Discography Posts Section -->
+    <!-- Latest Discography Posts Section -->
+    <div class="container">
+        <section class="latest-posts">
+            <a href="/discography" style="text-decoration: none;">
+                <h2>Discography</h2>
+              </a>
+              
+          <% if (discographyPosts && discographyPosts.length) { %>
+            <div class="posts-grid">
+              <% discographyPosts.forEach(post => { %>
+                <div class="card">
+                  <a href="/discography/<%= post.slug %>" class="card-link">
+                    <div class="card-body">
+                      <h4 class="class-title"><%= post.title %></h4>
+                      <div class="sub-title"><%= post.createdAt.toLocaleDateString() %></div>
+                      <% if (post.imagePath) { %>
+                        <div class="image-container">
+                          <img src="/discography/image/<%= post.imagePath %>" 
+                               alt="<%= post.title %>" 
+                               class="article-image"
+                               onerror="this.onerror=null; this.src='/images/placeholder.jpg';">
+                        </div>
+                      <% } %>
+                      <div class="class-text"><%= post.description %></div>
+                    </div>
+                  </a>
+                  <% if (user && user.isAdmin) { %>
+                    <div class="btn-flex">
+                      <a href="/discography/edit/<%= post.id %>" class="Edit">Edit</a>
+                      <form action="/discography/<%= post.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                        <button type="submit" class="btn-danger">Delete</button>
+                      </form>
+                    </div>
+                  <% } %>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <p>No discography posts available yet.</p>
+          <% } %>
+        </section>
+      </div>
+  
+      <!-- Latest Updates Section -->
+      <div class="container">
+        <section class="latest-posts">
+         <a href="/updates" style="text-decoration: none;">
+            <h2> Updates</h2>
+         </a>
+          <% if (updatesPosts && updatesPosts.length) { %>
+            <div class="posts-grid">
+              <% updatesPosts.forEach(post => { %>
+                <div class="card">
+                  <a href="/updates/<%= post.slug %>" class="card-link">
+                    <div class="card-body">
+                      <h4 class="class-title"><%= post.title %></h4>
+                      <div class="sub-title"><%= post.createdAt.toLocaleDateString() %></div>
+                      <% if (post.imagePath) { %>
+                        <div class="image-container">
+                          <img src="/updates/image/<%= post.imagePath %>" 
+                               alt="<%= post.title %>" 
+                               class="article-image"
+                               onerror="this.onerror=null; this.src='/images/placeholder.jpg';">
+                        </div>
+                      <% } %>
+                      <div class="class-text"><%= post.description %></div>
+                    </div>
+                  </a>
+                  <% if (user && user.isAdmin) { %>
+                    <div class="btn-flex">
+                      <a href="/updates/edit/<%= post.id %>" class="Edit">Edit</a>
+                      <form action="/updates/<%= post.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                        <button type="submit" class="btn-danger">Delete</button>
+                      </form>
+                    </div>
+                  <% } %>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <p>No updates available yet.</p>
+          <% } %>
+        </section>
+      </div>
+  
+      <!-- Latest Records Section -->
+      <div class="container">
+        <section class="latest-posts">
+          <a href="/records" style="text-decoration: none;"><h2> Records </h2></a>
+          <% if (recordsPosts && recordsPosts.length) { %>
+            <div class="posts-grid">
+              <% recordsPosts.forEach(post => { %>
+                <div class="card">
+                  <a href="/records/<%= post.slug %>" class="card-link">
+                    <div class="card-body">
+                      <h4 class="class-title"><%= post.title %></h4>
+                      <div class="sub-title"><%= post.createdAt.toLocaleDateString() %></div>
+                      <% if (post.imagePath) { %>
+                        <div class="image-container">
+                          <img src="/records/image/<%= post.imagePath %>" 
+                               alt="<%= post.title %>" 
+                               class="article-image"
+                               onerror="this.onerror=null; this.src='/images/placeholder.jpg';">
+                        </div>
+                      <% } %>
+                      <div class="class-text"><%= post.description %></div>
+                    </div>
+                  </a>
+                  <% if (user && user.isAdmin) { %>
+                    <div class="btn-flex">
+                      <a href="/records/edit/<%= post.id %>" class="Edit">Edit</a>
+                      <form action="/records/<%= post.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                        <button type="submit" class="btn-danger">Delete</button>
+                      </form>
+                    </div>
+                  <% } %>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <p>No records posts available yet.</p>
+          <% } %>
+        </section>
+      </div>
+  
+
     <%- include('./partials/footer.ejs') %>
     <script>
         function toggleMobileMenu(menu) {
