@@ -5,12 +5,33 @@
 
   <body>
     <%- include('./partials/nav.ejs') %>
+
+
+    <section class="hero">
+      <!-- Example central image (replace with your own) -->
+      <img class="hero-img" src="/img/e2.JPeG" alt="Drake fan website" />
+  
+      <h1 class="hero-heading">
+        <span>Drake</span>
+        <span>OVO</span>
+      </h1>
+  
+     
+  
+      <!-- Wave at the bottom -->
+      <div class="wave-container">
+        <!-- You can change the path fill to any shape or color you like -->
+        <svg viewBox="0 0 500 150" preserveAspectRatio="none">
+          <path class="wave" d="M0.00,49.98 C150.00,150.00 349.98,-50.00 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"></path>
+        </svg>
+      </div>
+    </section>
     <div class="index-first">
        
     </div>
 
     <div class="index-second">
-        <h2>Welcome to the Ultimate Drake Fan Website</h2>
+        <h2>Welcome to DrizzyHub - the Ultimate Drake Fan Website</h2>
 
         <p>Welcome to the ultimate destination for fans of the one and only Drake! Whether you’ve been with him since the So Far Gone days, vibe to the unforgettable hits of Take Care, or are just discovering his music, this site is dedicated to celebrating the life, music, and legacy of the 6 God.
 
@@ -51,17 +72,17 @@
 
     <div class="kelz-images">
         <div class="kelz-home">
-            <img class="kelz-2home" src="/img/f1.jpeg">
+            <img class="kelz-2home" src="/img/f1.jpeg" alt="$ome $exy $ongs">
  
          </div>
          <div class="kelz-home">
-             <img class="kelz-2home" src="/img/f2.jpeg">
+             <img class="kelz-2home" src="/img/f2.jpeg" alt="family matters">
          </div>
          <div class="kelz-home">
-             <img class="kelz-2home" src="/img/f3.jpeg">
+             <img class="kelz-2home" src="/img/f3.jpeg" alt="the 6">
          </div>
          <div class="kelz-home">
-             <img class="kelz-2home" src="/img/f4.jpeg">
+             <img class="kelz-2home" src="/img/f4.jpeg" alt="drake fan website">
          </div>
         </div>
 
@@ -191,6 +212,47 @@
           <% } %>
         </section>
       </div>
+
+      <section class="socials-section">
+        <h2>SOCIALS</h2>
+        <h3>Follow Drake on social media!</h3>
+    
+        <div class="socials-container">
+          <!-- Facebook -->
+          <div class="social-item">
+            <a href="https://www.facebook.com/Drake" target="_blank" rel="noopener">
+              <div class="social-bg">Fb</div>
+              <div class="social-name">Facebook</div>
+            </a>
+          </div>
+    
+          <!-- Instagram -->
+          <div class="social-item">
+            <a href="https://www.instagram.com/champagnepapi/" target="_blank" rel="noopener">
+              <div class="social-bg">Ig</div>
+              <div class="social-name">Instagram</div>
+            </a>
+          </div>
+    
+          <!-- Twitter (X) -->
+          <div class="social-item">
+            <a href="https://x.com/Drake?" target="_blank" rel="noopener">
+              <div class="social-bg">Tw</div>
+              <div class="social-name">Twitter</div>
+            </a>
+          </div>
+    
+       
+    
+          <!-- YouTube -->
+          <div class="social-item">
+            <a href="https://www.youtube.com/channel/UCByOQJjav0CUDwxCk-jVNRQ" target="_blank" rel="noopener">
+              <div class="social-bg">Yt</div>
+              <div class="social-name">YouTube</div>
+            </a>
+          </div>
+        </div>
+      </section>
   
 
     <%- include('./partials/footer.ejs') %>

@@ -12,59 +12,78 @@
       </p>
     </div>
 
-    <div class="container">
-      <h1 class="mb-4"></h1>
-      <!-- Link to create a new post (only visible to admin users) -->
-      <% if (user && user.isAdmin) { %>
-        <a href="/updates/new" class="btn">New News</a>
-      <% } %>
 
-      <!-- Grid container for the posts -->
-      <div class="posts-grid">
-        <% posts.forEach(post => { %>
-          <div class="card">
-            <!-- Clickable main content area -->
-            <a href="/updates/<%= post.slug %>" class="card-link">
-              <div class="card-body">
-                <h4 class="class-title"><%= post.title %></h4>
-                <div class="sub-title"><%= post.createdAt.toLocaleDateString() %></div>
-                <% if (post.imagePath) { %>
-                  <div class="image-container">
-                    <img 
-                      src="/updates/image/<%= post.imagePath %>" 
-                      alt="<%= post.title %>" 
-                      class="article-image"
-                      onerror="this.onerror=null; this.src='/images/placeholder.jpg';"
-                    >
-                  </div>
-                <% } %>
-                <div class="class-text">
-                  <%= post.description %>
-                </div>
-              </div>
-            </a>
+    
+    <div class="kelz-images">
+      <div class="kelz-1">
+          <img class="kelz-2" src="/img/u1.jpeg" alt="most streamed artist spotify">
 
-            <!-- Below the clickable area, display admin controls or a "Read more" link -->
-            <% if (user && user.isAdmin) { %>
-              <div class="btn-flex">
-                <a href="/updates/edit/<%= post.id %>" class="Edit">Edit</a>
-                <form 
-                  action="/updates/<%= post.id %>?_method=DELETE" 
-                  method="POST"
-                  onsubmit="return confirm('Are you sure you want to delete this post?');"
-                >
-                  <button type="submit" class="btn-danger">Delete</button>
-                </form>
-              </div>
-            <% } else { %>
-              <div class="btn-flex">
-                <a href="/updates/<%= post.slug %>" class="read-more">Read more</a>
-              </div>
-            <% } %>
-          </div>
-        <% }) %>
+       </div>
+       <div class="kelz-1">
+           <img class="kelz-2" src="/img/u2.jpeg" alt="most streamed rapper">
+       </div>
+       <div class="kelz-1">
+           <img class="kelz-2" src="/img/u3.jpeg" alt="drake fan site">
+       </div>
+       <div class="kelz-1">
+           <img class="kelz-2" src="/img/e3.jpeg" alt="most streamed apple music">
+       </div>
       </div>
-    </div>
+
+    
+
+      <div class="container">
+        <% if (user && user.isAdmin) { %>
+          <a href="/updates/new" class="btn">New Updates</a>
+        <% } %>
+    
+        <div class="posts-grid">
+          <% posts.forEach(post => { %>
+            <div class="card">
+              <!-- Clickable area (card content) -->
+              <a href="/updates/<%= post.slug %>" class="card-link">
+                <div class="card-body">
+                  <h4 class="class-title"><%= post.title %></h4>
+                  <div class="sub-title"><%= post.createdAt.toLocaleDateString() %></div>
+                  
+                  <% if (post.imagePath) { %>
+                    <div class="image-container">
+                      <img 
+                        src="/updates/image/<%= post.imagePath %>" 
+                        alt="<%= post.title %>"
+                        class="article-image"
+                        onerror="this.onerror=null; this.src='/images/placeholder.jpg';"
+                      >
+                    </div>
+                  <% } %>
+                  
+                  <div class="class-text">
+                    <%= post.description %>
+                  </div>
+                </div>
+              </a>
+    
+              <!-- Admin controls outside of the clickable area -->
+              <% if (user && user.isAdmin) { %>
+                <div class="btn-flex">
+                  <a href="/updates/edit/<%= post.id %>" class="Edit">
+                    Edit
+                  </a>
+                  <form 
+                    action="/updates/<%= post.id %>?_method=DELETE" 
+                    method="POST"
+                    onsubmit="return confirm('Are you sure you want to delete this post?');"
+                  >
+                    <button type="submit" class="btn-danger">
+                      Delete
+                    </button>
+                  </form>
+                </div>
+              <% } %>
+            </div>
+          <% }) %>
+        </div>
+      </div>
 
     <%- include('../partials/footer.ejs') %>
 
@@ -112,6 +131,22 @@
           closeDropdowns();
         }
       });
+
+      document.addEventListener("DOMContentLoaded", function () {
+  const items = document.querySelectorAll(".kelz-1");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      } else {
+        entry.target.classList.remove("visible");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  items.forEach(item => observer.observe(item));
+});
     </script>
   </body>
 </html>

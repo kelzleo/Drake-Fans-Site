@@ -491,6 +491,7 @@ header a {
     align-items: center; /* Center content vertically */
     color: white; /* Adjust text color for better visibility */
     padding: 30px;
+    margin-top: 10px;
 }
 
 .index-first h2{
@@ -927,6 +928,187 @@ header a {
   }
 }
 
+.socials-section {
+  padding: 50px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.socials-section h2 {
+  font-size: 3rem;
+  font-weight: bold;
+  color: lightcoral; /* Pink color for the heading */
+  margin-bottom: 10px;
+}
+
+.socials-section h3 {
+  font-size: 1.25rem;
+  color: green;
+  margin-bottom: 40px;
+  align-items: center;
+  text-align: center;
+}
+
+/* SOCIAL ICON GRID */
+.socials-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+.social-item {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-decoration: none;
+  color: #000;
+  transition: transform 0.2s ease;
+}
+
+.social-item:hover {
+  transform: translateY(-5px);
+}
+
+/* The big, semi-transparent letters (e.g., "Fb", "Ig", etc.) */
+.social-bg {
+  position: absolute;
+  font-size: 4rem;
+  color: #FF66CC;
+  opacity: 0.15; /* Make it semi-transparent */
+  z-index: 1;
+}
+
+/* The visible text (e.g., "Facebook") */
+.social-name {
+  position: relative;
+  z-index: 2; /* On top of the background letters */
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 5px;
+}
+
+/* OPTIONAL: Style the actual link so the entire block is clickable */
+.social-item a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+
+/* HERO SECTION */
+.hero {
+  position: relative;
+  background-color: pink;
+  /* Only keep top padding if needed; remove left/right padding */
+  padding: 60px 0 0 0; 
+  text-align: center;
+  overflow: hidden;
+  width: 100%;
+  margin: 0; /* Ensure no extra margin on body or hero */
+}
+
+.hero-rec{
+  position: relative;
+  background-color: black;
+  /* Only keep top padding if needed; remove left/right padding */
+  padding: 60px 0 0 0; 
+  text-align: center;
+  overflow: hidden;
+  width: 100%;
+  margin: 0; /* Ensure no extra margin on body or hero */
+
+}
+
+/* Large text overlay (Jennie Ruby) */
+.hero-heading {
+  font-family: 'Great Vibes', cursive; /* Example cursive font */
+  font-size: 5rem; /* Adjust as needed */
+  color: #FF0033; /* Vibrant red/pink color */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.hero-heading span {
+  white-space: nowrap; /* Keep each name on its own */
+}
+
+/* Optional central image */
+.hero-img {
+  max-width: 250px; /* Adjust to your preference */
+  width: 100%;
+  margin: 0 auto 30px;
+  display: block;
+}
+
+/* Button */
+.hero-btn {
+  display: inline-block;
+  background-color: #FF0033;
+  color: #fff;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-bottom: 60px; /* Space before wave */
+  text-decoration: none;
+}
+.hero-btn:hover {
+  background-color: #ff3366;
+  transform: translateY(-3px);
+}
+
+/* WAVE TRANSITION */
+.wave-container {
+  position: relative;
+  width: 100%;
+  height: 100px; /* Wave height */
+  overflow: hidden;
+  line-height: 0;
+}
+.wave-container svg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.wave-container .wave {
+  fill: lightblue; /* Pink color for the next section */
+}
+.wave-container-rec {
+  position: relative;
+  width: 100%;
+  height: 100px; /* Wave height */
+  overflow: hidden;
+  line-height: 0;
+}
+.wave-container-rec svg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.wave-container-rec .wave {
+  fill: white; /* Pink color for the next section */
+}
+
 
 /* Records Section */
 .records-first {
@@ -963,11 +1145,10 @@ header a {
 
 .records-posts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* More flexible grid */
-  gap: 20px;
-  padding: 10px;
- 
+  grid-template-columns: repeat(2, 1fr); /* 2 columns, each taking up equal space */
+  gap: 20px;  /* Space between grid items */
   margin-top: 30px;
+  justify-items: stretch; /* Ensure grid items fill each cell */
   
 }         
 
@@ -1302,7 +1483,7 @@ header a {
   background-color: #002d5a;
   padding: 20px;
     text-align: center !important;
-    height: 300px;
+    height: auto;
 }
 
 .footer p{
